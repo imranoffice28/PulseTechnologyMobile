@@ -1,10 +1,8 @@
 import { StyleSheet, Text, View } from 'react-native';
 import React from 'react';
 import { useThemeContext } from '../theme/ThemeProvider';
-import { get } from 'react-native/Libraries/TurboModule/TurboModuleRegistry';
 
 const SoldScreen = () => {
-  // Later you can fetch or display sold product data here
   const {colors}=useThemeContext()
   const styles=getStyles(colors)
 

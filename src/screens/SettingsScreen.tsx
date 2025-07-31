@@ -1,25 +1,19 @@
-import React, { useCallback, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet';
 import { useThemeContext } from '../theme/ThemeProvider';
+import ThemeSettingModal from '../components/ThemeSettingModal';
+import { BottomSheetModal } from '@gorhom/bottom-sheet';
 
 const SettingsScreen = () => {
   const { colors } = useThemeContext();
   const styles = getStyles(colors);
-
-  const bottomSheetRef = useRef<BottomSheet>(null);
+  const bottomSheetRef = useRef<BottomSheetModal>(null);
   const [selectedOption, setSelectedOption] = useState('');
-
-  const snapPoints = useMemo(() => ['30%', '50%'], []);
 
   const openBottomSheet = useCallback((title: string) => {
     setSelectedOption(title);
-    bottomSheetRef.current?.snapToIndex(0);
-  }, []);
-
-  const handleSheetChanges = useCallback((index: number) => {
-    console.log('BottomSheet index:', index);
+    bottomSheetRef.current?.present();
   }, []);
 
   const settings = [
@@ -40,27 +34,13 @@ const SettingsScreen = () => {
         </TouchableOpacity>
       ))}
 
-      <BottomSheet
-        ref={bottomSheetRef}
-        index={-1}
-        snapPoints={snapPoints}
-        enablePanDownToClose
-        onChange={handleSheetChanges}
-      >
-        <BottomSheetView style={styles.contentContainer}>
-          <Text style={styles.sheetTitle}>{selectedOption}</Text>
-          <Text style={styles.sheetText}>
-            This is the content for "{selectedOption}". Add any controls or settings here.
-          </Text>
-        </BottomSheetView>
-      </BottomSheet>
+      {/* Modal */}
+      <ThemeSettingModal ref={bottomSheetRef} />
     </View>
   );
 };
 
 export default SettingsScreen;
-
-
 const getStyles = (colors: Colors) =>
   StyleSheet.create({
     container: {
@@ -93,18 +73,5 @@ const getStyles = (colors: Colors) =>
     },
     leftIcon: {
       marginRight: 16,
-    },
-    contentContainer: {
-      padding: 24,
-    },
-    sheetTitle: {
-      fontSize: 18,
-      fontWeight: '600',
-      marginBottom: 10,
-      color: colors.text,
-    },
-    sheetText: {
-      fontSize: 15,
-      color: colors.mutedText,
     },
   });
