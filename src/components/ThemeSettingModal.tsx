@@ -3,12 +3,9 @@ import {
   Text,
   StyleSheet,
   TouchableOpacity,
-  ScrollView,
 } from 'react-native';
 import {
-  BottomSheetBackdrop,
   BottomSheetModal,
-  BottomSheetView,
 } from '@gorhom/bottom-sheet';
 import { Ionicons } from '@expo/vector-icons';
 import { useThemeContext } from '../theme/ThemeProvider';
@@ -26,17 +23,21 @@ const themeOptions: ThemeOption[] = [
   { key: 'dark', label: 'Dark Mode', icon: 'moon-outline' },
 ];
 
-const ThemeSettingModal = forwardRef<BottomSheetModal>((props, ref) => {
+const ThemeSettingModal = forwardRef<BottomSheetModal>((_, ref) => {
   const { colors, theme, setTheme } = useThemeContext();
   const styles = getStyles(colors);
 
   const handleSelect = (selectedTheme: ThemeOption['key']) => {
     setTheme(selectedTheme);
+
+    // Safely dismiss modal if ref is an object
+    if (ref && typeof ref !== 'function' && ref.current) {
+      ref.current.dismiss();
+    }
   };
 
   return (
-  <GlobalBottomSheetModal ref={ref}>
-
+    <GlobalBottomSheetModal ref={ref}>
       <Text style={styles.title}>Select App Theme</Text>
 
       {themeOptions.map((option) => {
@@ -48,9 +49,7 @@ const ThemeSettingModal = forwardRef<BottomSheetModal>((props, ref) => {
             style={[
               styles.optionContainer,
               {
-                borderColor: isSelected
-                  ? colors.primary
-                  : colors.border,
+                borderColor: isSelected ? colors.primary : colors.border,
               },
             ]}
             onPress={() => handleSelect(option.key)}
@@ -82,7 +81,7 @@ const ThemeSettingModal = forwardRef<BottomSheetModal>((props, ref) => {
           </TouchableOpacity>
         );
       })}
-  </GlobalBottomSheetModal>
+    </GlobalBottomSheetModal>
   );
 });
 
@@ -90,7 +89,6 @@ export default ThemeSettingModal;
 
 const getStyles = (colors: Colors) =>
   StyleSheet.create({
-
     title: {
       fontSize: 22,
       fontWeight: 'bold',

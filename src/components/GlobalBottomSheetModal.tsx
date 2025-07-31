@@ -23,23 +23,31 @@ const GlobalBottomSheetModal = forwardRef<BottomSheetModal, Props>(
     const { colors } = useThemeContext();
 
     return (
-      <BottomSheetModal
-        ref={ref}
-        index={0}
-        snapPoints={snapPoints}
-        enablePanDownToClose
-        backgroundStyle={{ backgroundColor: colors.card }}
-        handleIndicatorStyle={{ backgroundColor: colors.mutedText }}
-        backdropComponent={({ animatedIndex, animatedPosition }) => (
-          <BottomSheetBackdrop
-            disappearsOnIndex={-1}
-            appearsOnIndex={0}
-            animatedIndex={animatedIndex}
-            animatedPosition={animatedPosition}
-            pressBehavior="close"
-          />
-        )}
-      >
+<BottomSheetModal
+  ref={ref}
+  index={0}
+  snapPoints={snapPoints}
+  enablePanDownToClose
+  backgroundStyle={{ backgroundColor: colors.card }}
+  handleIndicatorStyle={{ backgroundColor: colors.mutedText,width: 50 }}
+ animationConfigs={{
+  damping: 30,              // ↓ Lower = less resistance = faster
+  mass: 1,
+  stiffness: 250,           // ↑ Higher = snappier/faster
+  overshootClamping: true,  // Prevents bounce
+  restDisplacementThreshold: 0.5,
+  restSpeedThreshold: 0.5,
+}}
+  backdropComponent={({ animatedIndex, animatedPosition }) => (
+    <BottomSheetBackdrop
+      disappearsOnIndex={-1}
+      appearsOnIndex={0}
+      animatedIndex={animatedIndex}
+      animatedPosition={animatedPosition}
+      pressBehavior="close"
+    />
+  )}
+>
         <BottomSheetView style={[styles.contentContainer, containerStyle]}>
           <ScrollView
             contentContainerStyle={{ paddingBottom: 24 }}
