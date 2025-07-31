@@ -5,6 +5,7 @@ import { Ionicons } from '@expo/vector-icons';
 // Import your screen components
 import HomeScreen from '../screens/HomeScreen';
 import ServiceScreen from '../screens/ServiceScreen';
+import SoldScreen from '../screens/SoldScreen';
 
 // Create the tab navigator
 const Tab = createBottomTabNavigator();
@@ -24,6 +25,9 @@ export default function BottomTabNavigator() {
             case 'Service':
               iconName = 'construct';
               break;
+               case 'Sold':
+    iconName = 'pricetag'; // or 'cart', 'cash', etc.
+    break;
             default:
               iconName = 'ellipse';
           }
@@ -35,6 +39,7 @@ export default function BottomTabNavigator() {
       })}
     >
       <Tab.Screen options={{headerShown:true, headerTitle:"Pulse Technology"}} name="Home" component={HomeScreen} />
+      <Tab.Screen options={{headerShown:true, headerTitle:"Sold Products"}} name="Sold" component={SoldScreen} />
       <Tab.Screen name="Service" component={ServiceScreen} />
     </Tab.Navigator>
   );
