@@ -1,7 +1,7 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
-import { Dimensions, Platform } from 'react-native';
+import { Dimensions, Platform, View } from 'react-native';
 
 import HomeScreen from '../screens/HomeScreen';
 import ServiceScreen from '../screens/ServiceScreen';
@@ -14,7 +14,7 @@ const { height: screenHeight } = Dimensions.get('window');
 const TAB_BAR_HEIGHT = screenHeight < 700 ? 55 : 65;
 
 export default function BottomTabNavigator() {
-  const { colors } = useThemeContext(); // ✅ Hook now inside component
+  const { colors } = useThemeContext();
 
   return (
     <Tab.Navigator
@@ -46,8 +46,11 @@ export default function BottomTabNavigator() {
         tabBarInactiveTintColor: 'gray',
         tabBarStyle: {
           height: TAB_BAR_HEIGHT,
-          paddingBottom: Platform.OS === 'android' ? 8 : 20,
+          paddingBottom: Platform.OS === 'android' ? 12 : 20,
           paddingTop: 8,
+          backgroundColor: colors.tabBackground, // ✅ correct background
+          borderTopWidth: 0,
+          elevation: 10, // Optional: Adds shadow for Android
         },
         tabBarLabelStyle: {
           fontSize: 12,

@@ -12,6 +12,7 @@ import {
 } from '@gorhom/bottom-sheet';
 import { Ionicons } from '@expo/vector-icons';
 import { useThemeContext } from '../theme/ThemeProvider';
+import GlobalBottomSheetModal from './GlobalBottomSheetModal';
 
 type ThemeOption = {
   key: 'system' | 'light' | 'dark';
@@ -34,76 +35,54 @@ const ThemeSettingModal = forwardRef<BottomSheetModal>((props, ref) => {
   };
 
   return (
-    <BottomSheetModal
-      ref={ref}
-      index={0}
-      enablePanDownToClose
-      backgroundStyle={{ backgroundColor: colors.card }}
-      handleIndicatorStyle={{ backgroundColor: colors.mutedText }}
-      backdropComponent={({ animatedIndex, animatedPosition }) => (
-        <BottomSheetBackdrop
-          disappearsOnIndex={-1}
-          appearsOnIndex={0}
-          animatedIndex={animatedIndex}
-          animatedPosition={animatedPosition}
-          pressBehavior="close"
-        />
-      )}
-    >
-      <BottomSheetView style={styles.contentContainer}>
-        <ScrollView
-          contentContainerStyle={{ paddingBottom: 24 }}
-          showsVerticalScrollIndicator={false}
-          bounces={false}
-        >
-            <Text style={styles.title}>Select App Theme</Text>
+  <GlobalBottomSheetModal ref={ref}>
 
-            {themeOptions.map((option) => {
-              const isSelected = theme === option.key;
+      <Text style={styles.title}>Select App Theme</Text>
 
-              return (
-                <TouchableOpacity
-                  key={option.key}
-                  style={[
-                    styles.optionContainer,
-                    {
-                      borderColor: isSelected
-                        ? colors.primary
-                        : colors.border,
-                    },
-                  ]}
-                  onPress={() => handleSelect(option.key)}
-                >
-                  <Ionicons
-                    name={option.icon}
-                    size={24}
-                    color={isSelected ? colors.primary : colors.text}
-                    style={styles.icon}
-                  />
-                  <Text
-                    style={[
-                      styles.label,
-                      { color: isSelected ? colors.primary : colors.text },
-                    ]}
-                  >
-                    {option.label}
-                  </Text>
-                  <Ionicons
-                    name={
-                      isSelected
-                        ? 'radio-button-on-outline'
-                        : 'radio-button-off-outline'
-                    }
-                    size={22}
-                    color={isSelected ? colors.primary : colors.text}
-                    style={{ marginLeft: 'auto' }}
-                  />
-                </TouchableOpacity>
-              );
-            })}
-        </ScrollView>
-      </BottomSheetView>
-    </BottomSheetModal>
+      {themeOptions.map((option) => {
+        const isSelected = theme === option.key;
+
+        return (
+          <TouchableOpacity
+            key={option.key}
+            style={[
+              styles.optionContainer,
+              {
+                borderColor: isSelected
+                  ? colors.primary
+                  : colors.border,
+              },
+            ]}
+            onPress={() => handleSelect(option.key)}
+          >
+            <Ionicons
+              name={option.icon}
+              size={24}
+              color={isSelected ? colors.primary : colors.text}
+              style={styles.icon}
+            />
+            <Text
+              style={[
+                styles.label,
+                { color: isSelected ? colors.primary : colors.text },
+              ]}
+            >
+              {option.label}
+            </Text>
+            <Ionicons
+              name={
+                isSelected
+                  ? 'radio-button-on-outline'
+                  : 'radio-button-off-outline'
+              }
+              size={22}
+              color={isSelected ? colors.primary : colors.text}
+              style={{ marginLeft: 'auto' }}
+            />
+          </TouchableOpacity>
+        );
+      })}
+  </GlobalBottomSheetModal>
   );
 });
 
@@ -111,20 +90,7 @@ export default ThemeSettingModal;
 
 const getStyles = (colors: Colors) =>
   StyleSheet.create({
-    contentContainer: {
-      padding: 24,
-    },
-    selectionCard: {
-      backgroundColor: colors.card,
-      borderRadius: 12,
-      paddingHorizontal: 20,
-      paddingVertical: 40,
-      shadowColor: colors.shadow,
-      shadowOffset: { width: 0, height: 2 },
-      shadowOpacity: 0.1,
-      shadowRadius: 4,
-      elevation: 20,
-    },
+
     title: {
       fontSize: 22,
       fontWeight: 'bold',
